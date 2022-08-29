@@ -1199,6 +1199,7 @@
 		<!--Cannot be filtered.-->
 
 <!-- 20220829: SMc: Adding my changes: -->
+	<!--SYSMON EVENT ID 27 : "File Block Executable" [FileBlockExecutable]-->
 	<RuleGroup name="" groupRelation="or">
 		<FileBlockExecutable onmatch="include">
 			<Image name="technique_id=T1105,technique_name=Ingress Tool Transfer" condition="image">excel.exe</Image>
