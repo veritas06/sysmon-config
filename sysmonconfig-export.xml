@@ -4,13 +4,14 @@
   Source project:	https://github.com/SwiftOnSecurity/sysmon-config
   Source license:	Creative Commons Attribution 4.0 | You may privatize, fork, edit, teach, publish, or deploy for commercial use - with attribution in the text.
 
-  Fork version:	<N/A>
-  Fork author:	<N/A>
+  Fork version:	1.0
+  Fork author:	Sean P. McAdam
   Fork project:	<N/A>
-  Fork license:	<N/A>
+  Fork license:	Creative Commons Attribution 4.0
 
-  REQUIRED: Sysmon version 13 or higher (due to changes in syntax and bug-fixes)
+  REQUIRED: Sysmon version 14 or higher (due to changes in syntax and bug-fixes)
 	https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon
+	20220829: SMc: Changing the minimum version to 14 because I'm taking advantage of FileBlockExecutable
 
   NOTE: To collect Sysmon logs centrally for free, see https://aka.ms/WEF | Command to allow log access to the Network Service:
 	wevtutil.exe sl Microsoft-Windows-Sysmon/Operational /ca:O:BAG:SYD:(A;;0xf0005;;;SY)(A;;0x5;;;BA)(A;;0x1;;;S-1-5-32-573)(A;;0x1;;;NS)
@@ -60,7 +61,8 @@
 
 -->
 
-<Sysmon schemaversion="4.50">
+<!-- 20220829: SMc: Updating schema to be 4.82 -->
+<Sysmon schemaversion="4.82">
 	<!--SYSMON META CONFIG-->
 	<HashAlgorithms>md5,sha256,IMPHASH</HashAlgorithms> <!-- Both MD5 and SHA256 are the industry-standard algorithms. Remove IMPHASH if you do not use DLL import fingerprinting. -->
 	<CheckRevocation/> <!-- Check loaded drivers, log if their code-signing certificate has been revoked, in case malware stole one to sign a kernel driver -->
@@ -1196,5 +1198,16 @@
 			Sysinternals forum or over Twitter (@markrussinovich)."-->
 		<!--Cannot be filtered.-->
 
+<!-- 20220829: SMc: Adding my changes: -->
+	<RuleGroup name="" groupRelation="or">
+		<FileBlockExecutable onmatch="include">
+			<Image name="technique_id=T1105,technique_name=Ingress Tool Transfer" condition="image">excel.exe</Image>
+			<Image name="technique_id=T1105,technique_name=Ingress Tool Transfer" condition="image">winword.exe</Image>
+			<Image name="technique_id=T1105,technique_name=Ingress Tool Transfer" condition="image">powerpnt.exe</Image>
+			<Image name="technique_id=T1105,technique_name=Ingress Tool Transfer" condition="image">outlook.exe</Image>
+			<Image name="technique_id=T1105,technique_name=Ingress Tool Transfer" condition="image">msaccess.exe</Image>
+			<Image name="technique_id=T1105,technique_name=Ingress Tool Transfer" condition="image">mspub.exe</Image>
+		</FileBlockExecutable>
+	</RuleGroup>
 	</EventFiltering>
 </Sysmon>
