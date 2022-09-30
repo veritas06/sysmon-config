@@ -1213,10 +1213,11 @@
 		</FileBlockExecutable>
 	</RuleGroup>
 
-<!-- 20220930: SMc: Not enabling this yet -->
+	<!-- 20220930: SMc: Not enabling this yet -->
 	<!-- SYSMON EVENT ID 28 : "File Block Shredding" [FileBlockShredding] -->
     <!-- COMMENT: This event is generated when Sysmon detects and blocks file shredding from tools such as [SDelete](https://learn.microsoft.com/en-us/sysinternals/downloads/sdelete). -->
-	<!-- <RuleGroup name="" groupRelation="or">
+	<!-- 
+	<RuleGroup name="" groupRelation="or">
 		<FileBlockShredding onmatch="include">
 		</FileBlockShredding>
 	</RuleGroup>
