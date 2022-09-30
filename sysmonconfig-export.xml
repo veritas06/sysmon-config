@@ -61,8 +61,8 @@
 
 -->
 
-<!-- 20220829: SMc: Updating schema to be 4.82 -->
-<Sysmon schemaversion="4.82">
+<!-- 20220930: SMc: Updating schema to be 4.83 -->
+<Sysmon schemaversion="4.83">
 	<!--SYSMON META CONFIG-->
 	<HashAlgorithms>md5,sha256,IMPHASH</HashAlgorithms> <!-- Both MD5 and SHA256 are the industry-standard algorithms. Remove IMPHASH if you do not use DLL import fingerprinting. -->
 	<CheckRevocation/> <!-- Check loaded drivers, log if their code-signing certificate has been revoked, in case malware stole one to sign a kernel driver -->
@@ -1199,8 +1199,10 @@
 		<!--Cannot be filtered.-->
 
 <!-- 20220829: SMc: Adding my changes: -->
-	<!--SYSMON EVENT ID 27 : "File Block Executable" [FileBlockExecutable]-->
-	<RuleGroup name="" groupRelation="or">
+	<!-- SYSMON EVENT ID 28 : "File Block Executable" [FileBlockExecutable] -->
+    <!-- COMMENT: This event is generated when Sysmon detects and blocks the creation of executable files. -->
+	<!-- Medium: Olaf Hartong: [Sysmon 14.0 — FileBlockExecutable](https://medium.com/@olafhartong/sysmon-14-0-fileblockexecutable-13d7ba3dff3e) -->
+    <RuleGroup name="" groupRelation="or">
 		<FileBlockExecutable onmatch="include">
 			<Image name="technique_id=T1105,technique_name=Ingress Tool Transfer" condition="image">excel.exe</Image>
 			<Image name="technique_id=T1105,technique_name=Ingress Tool Transfer" condition="image">winword.exe</Image>
@@ -1210,5 +1212,14 @@
 			<Image name="technique_id=T1105,technique_name=Ingress Tool Transfer" condition="image">mspub.exe</Image>
 		</FileBlockExecutable>
 	</RuleGroup>
+
+<!-- 20220930: SMc: Not enabling this yet -->
+	<!-- SYSMON EVENT ID 28 : "File Block Shredding" [FileBlockShredding] -->
+    <!-- COMMENT: This event is generated when Sysmon detects and blocks file shredding from tools such as [SDelete](https://learn.microsoft.com/en-us/sysinternals/downloads/sdelete). -->
+	<!-- <RuleGroup name="" groupRelation="or">
+		<FileBlockShredding onmatch="include">
+		</FileBlockShredding>
+	</RuleGroup>
+	-->
 	</EventFiltering>
 </Sysmon>
